@@ -1,0 +1,26 @@
+[Unit]
+Description=Nomad Server
+
+[Container]
+Image=docker.io/hashicorp/nomad:1.11
+AutoUpdate=registry
+ContainerName=nomad-server
+
+# API
+PublishPort=127.0.0.1:4646:4646
+# RPC
+PublishPort=127.0.0.1:4647:4647
+# SERF
+# PublishPort=127.0.0.1:4648:4648/tcp
+# PublishPort=127.0.0.1:4648:4648/udp
+
+Environment=NOMAD_SKIP_DOCKER_IMAGE_WARN=1
+Exec=agent \
+	-server \
+	-data-dir=/data \
+	-bootstrap-expect=1
+
+Volume=nomad-server-data:/data
+
+[Install]
+WantedBy=multi-user.target
