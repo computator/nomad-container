@@ -1,0 +1,22 @@
+[Unit]
+Description=Nomad Agent
+
+[Container]
+Image=docker.io/hashicorp/nomad:1.11
+AutoUpdate=registry
+ContainerName=nomad-agent
+
+Environment=NOMAD_SKIP_DOCKER_IMAGE_WARN=1
+Exec=agent \
+	-client \
+	-data-dir=/data \
+	-alloc-dir=/alloc \
+	-config /config/agent.conf \
+	-servers $NOMAD_SERVERS
+
+Volume=nomad-agent-data:/data
+Volume=%E/containers/%N/config:/config:ro
+Volume=%S/nomad/alloc:/alloc
+
+[Install]
+WantedBy=multi-user.target
