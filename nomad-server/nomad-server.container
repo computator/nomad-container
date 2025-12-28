@@ -7,20 +7,29 @@ AutoUpdate=registry
 ContainerName=nomad-server
 
 # API
-PublishPort=127.0.0.1:4646:4646
+PublishPort=${PUBLISH_IP}:4646:4646
 # RPC
-PublishPort=127.0.0.1:4647:4647
+PublishPort=${PUBLISH_IP}:4647:4647
 # SERF
-# PublishPort=127.0.0.1:4648:4648/tcp
-# PublishPort=127.0.0.1:4648:4648/udp
+# PublishPort=${PUBLISH_IP}:4648:4648/tcp
+# PublishPort=${PUBLISH_IP}:4648:4648/udp
 
 Environment=NOMAD_SKIP_DOCKER_IMAGE_WARN=1
 Exec=agent \
 	-server \
 	-data-dir=/data \
-	-bootstrap-expect=1
+	-bootstrap-expect=1 \
+	-config /run/announce.conf
 
 Volume=nomad-server-data:/data
+Volume=%t/%N-announce.conf:/run/announce.conf:z,ro
+
+[Service]
+ExecStartPre=sh -c '\
+	printf "advertise { http = \\"%%s\\", rpc = \\"%%s\\", serf = \\"%%s\\" }" \
+		"$1" "$1" "$1" \
+		> %t/%N-announce.conf' -- \
+	${ANNOUNCE_IP}
 
 [Install]
 WantedBy=multi-user.target
