@@ -19,16 +19,16 @@ Exec=agent \
 	-server \
 	-data-dir=/data \
 	-bootstrap-expect=1 \
-	-config /run/announce.conf
+	-config /run/announce-conf.hcl
 
 Volume=nomad-server-data:/data
-Volume=%t/%N-announce.conf:/run/announce.conf:z,ro
+Volume=%t/%N-announce-conf.hcl:/run/announce-conf.hcl:z,ro
 
 [Service]
 ExecStartPre=sh -c '\
 	printf "advertise { http = \\"%%s\\", rpc = \\"%%s\\", serf = \\"%%s\\" }" \
 		"$1" "$1" "$1" \
-		> %t/%N-announce.conf' -- \
+		> %t/%N-announce-conf.hcl' -- \
 	${ANNOUNCE_IP}
 
 [Install]

@@ -11,7 +11,7 @@ Exec=agent \
 	-client \
 	-data-dir=/data \
 	-alloc-dir=/alloc \
-	-config /config/agent.conf \
+	-config /config/agent.hcl \
 	-servers $NOMAD_SERVERS
 
 Volume=nomad-agent-data:/data
