@@ -15,8 +15,11 @@ Exec=agent \
 	-servers $NOMAD_SERVERS
 
 Volume=nomad-agent-data:/data
-Volume=%E/containers/%N/config:/config:ro
-Volume=%S/nomad/alloc:/alloc
+Volume=%E/containers/systemd/%N/config:/config:z,ro
+Volume=%S/nomad/alloc:/alloc:z,rshared
+
+[Service]
+ExecStartPre=mkdir -p %S/nomad/alloc
 
 [Install]
 WantedBy=multi-user.target
