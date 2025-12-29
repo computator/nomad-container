@@ -42,18 +42,20 @@ build_configs () {
 	fi
 }
 
-mkdir -p ${EP_CONF_DIR}
-
 cmd=${1-}
 [ $# -gt 0 ] && shift
-set -- nomad ${cmd:+"${cmd}"} \
-	-config ${EP_CONF_DIR} \
-	-config /config \
-	-data-dir /data \
-	-alloc-dir /alloc \
-	-plugin-dir /plugins \
-	"$@"
 
-build_configs
+if [ "${cmd}" = "agent" ]; then
+	mkdir -p ${EP_CONF_DIR}
+	build_configs
 
-exec "$@"
+	set -- \
+		-config ${EP_CONF_DIR} \
+		-config /config \
+		-data-dir /data \
+		-alloc-dir /alloc \
+		-plugin-dir /plugins \
+		"$@"
+fi
+
+exec nomad ${cmd:+"${cmd}"} "$@"
