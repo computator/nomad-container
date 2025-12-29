@@ -1,26 +1,29 @@
 [Unit]
 Description=Nomad Agent
 
+[Service]
+Environment=ALLOC_DIR=%S/nomad/alloc
+ExecStartPre=mkdir -p ${ALLOC_DIR}
+
 [Container]
 Image=ghcr.io/computator/nomad
 AutoUpdate=registry
 ContainerName=nomad-agent
 
+Environment=ALLOC_DIR=${ALLOC_DIR}
 Environment=DRIVER_ALLOWLIST=podman
 
 Exec=agent \
 	-client
 
 Volume=nomad-agent-data:/data
-Volume=%S/nomad/alloc:/alloc:z,rshared
+Volume=${ALLOC_DIR}:${ALLOC_DIR}:z,rshared
 Volume=/run/podman/podman.sock:/run/podman/podman.sock
 
+AddCapability=SYS_ADMIN
 SecurityLabelDisable=true
 PodmanArgs=--cgroupns=host
 Unmask=/sys/fs/cgroup
-
-[Service]
-ExecStartPre=mkdir -p %S/nomad/alloc
 
 [Install]
 WantedBy=multi-user.target

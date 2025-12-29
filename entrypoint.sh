@@ -57,7 +57,7 @@ if [ "${cmd}" = "agent" ]; then
 		-config ${EP_CONF_DIR} \
 		-config /config \
 		-data-dir /data \
-		-alloc-dir /alloc \
+		-alloc-dir "${ALLOC_DIR?'ALLOC_DIR must be set!'}" \
 		-plugin-dir /plugins \
 		"$@"
 fi
