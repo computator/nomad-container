@@ -8,6 +8,10 @@ build_configs () {
 		disable_update_check = true
 	EOF
 
+	cat > "${EP_CONF_DIR}/enable-podman-plugin.hcl" <<-EOF
+		plugin "nomad-driver-podman" {}
+	EOF
+
 	if [ -n "${ADVERTISE_IP-}" ]; then
 			cat > "${EP_CONF_DIR}/advertise-ip.hcl" <<-EOF
 				advertise {
