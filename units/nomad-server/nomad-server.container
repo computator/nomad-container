@@ -1,0 +1,24 @@
+[Unit]
+Description=Nomad Server
+
+[Container]
+Image=ghcr.io/computator/nomad
+AutoUpdate=registry
+ContainerName=nomad-server
+
+# API
+PublishPort=${PUBLISH_IP}:4646:4646
+# RPC
+PublishPort=${PUBLISH_IP}:4647:4647
+# SERF
+# PublishPort=${PUBLISH_IP}:4648:4648/tcp
+# PublishPort=${PUBLISH_IP}:4648:4648/udp
+
+Exec=agent \
+	-server \
+	-bootstrap-expect=1
+
+Volume=nomad-server-data:/data
+
+[Install]
+WantedBy=multi-user.target

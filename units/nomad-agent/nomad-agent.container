@@ -2,20 +2,16 @@
 Description=Nomad Agent
 
 [Container]
-Image=docker.io/hashicorp/nomad:1.11
+Image=ghcr.io/computator/nomad
 AutoUpdate=registry
 ContainerName=nomad-agent
 
-Environment=NOMAD_SKIP_DOCKER_IMAGE_WARN=1
+Environment=DRIVER_ALLOWLIST=podman
+
 Exec=agent \
-	-client \
-	-data-dir=/data \
-	-alloc-dir=/alloc \
-	-config /config/agent.hcl \
-	-servers $NOMAD_SERVERS
+	-client
 
 Volume=nomad-agent-data:/data
-Volume=%E/containers/systemd/%N/config:/config:z,ro
 Volume=%S/nomad/alloc:/alloc:z,rshared
 
 PodmanArgs=--cgroupns=host
