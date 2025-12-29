@@ -13,7 +13,9 @@ Exec=agent \
 
 Volume=nomad-agent-data:/data
 Volume=%S/nomad/alloc:/alloc:z,rshared
+Volume=/run/podman/podman.sock:/run/podman/podman.sock
 
+SecurityLabelDisable=true
 PodmanArgs=--cgroupns=host
 Unmask=/sys/fs/cgroup
 
