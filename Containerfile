@@ -6,6 +6,7 @@ LABEL org.opencontainers.image.source=https://github.com/computator/nomad-contai
 ARG TARGETOS
 ARG TARGETARCH
 RUN set -eux; \
+	mkdir /config /plugins; \
 	rel_base=https://releases.hashicorp.com ; \
 	rel_url=$( \
 		wget -qO - "${rel_base}$( \
@@ -16,10 +17,12 @@ RUN set -eux; \
 	) ; \
 	wget -O plugin.zip "${rel_url}"; \
 	unzip plugin.zip nomad-driver-podman; \
-	install -D nomad-driver-podman /plugins/nomad-driver-podman; \
+	install nomad-driver-podman /plugins/nomad-driver-podman; \
 	rm -f nomad-driver-podman plugin.zip
 
 COPY entrypoint.sh /
 
+VOLUME /data
+VOLUME /alloc
 EXPOSE 4646 4647 4648/tcp 4648/udp
 ENTRYPOINT ["/entrypoint.sh"]
