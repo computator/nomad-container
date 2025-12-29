@@ -12,6 +12,14 @@ build_configs () {
 		plugin "nomad-driver-podman" {}
 	EOF
 
+	if [ -n "${BIND_PORTS-}" ]; then
+			cat > "${EP_CONF_DIR}/ports.hcl" <<-EOF
+				ports {
+				  ${BIND_PORTS}
+				}
+			EOF
+	fi
+
 	if [ -n "${ADVERTISE_IP-}" ]; then
 			cat > "${EP_CONF_DIR}/advertise-ip.hcl" <<-EOF
 				advertise {

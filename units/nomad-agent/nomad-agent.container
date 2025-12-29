@@ -9,9 +9,11 @@ ExecStartPre=mkdir -p ${ALLOC_DIR}
 Image=ghcr.io/computator/nomad
 AutoUpdate=registry
 ContainerName=nomad-agent
+Network=host
 
 Environment=ALLOC_DIR=${ALLOC_DIR}
 Environment=DRIVER_ALLOWLIST=podman
+Environment=BIND_PORTS=http=4649
 
 Exec=agent \
 	-client
