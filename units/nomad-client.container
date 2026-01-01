@@ -1,5 +1,5 @@
 [Unit]
-Description=Nomad Agent
+Description=Nomad Client
 
 [Service]
 Environment=ALLOC_DIR=%S/nomad/alloc
@@ -8,20 +8,20 @@ ExecStartPre=mkdir -p ${ALLOC_DIR}
 [Container]
 Image=ghcr.io/computator/nomad
 AutoUpdate=registry
-ContainerName=nomad-agent
+ContainerName=nomad-client
 Network=host
 
 # Set to server address
 Environment=NOMAD_SERVERS=host.containers.internal
 Environment=ALLOC_DIR=${ALLOC_DIR}
 Environment=DRIVER_ALLOWLIST=podman
-# Optional: override agent http port to not conflict with local server
+# Optional: override client http port to not conflict with local server
 Environment=BIND_PORTS=http=4649
 
 Exec=agent \
 	-client
 
-Volume=nomad-agent-data:/data
+Volume=nomad-client-data:/data
 Volume=${ALLOC_DIR}:${ALLOC_DIR}:z,rshared
 Volume=/run/podman/podman.sock:/run/podman/podman.sock
 
