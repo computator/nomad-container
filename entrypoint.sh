@@ -20,6 +20,12 @@ build_configs () {
 			EOF
 	fi
 
+	if [ -n "${BIND_ADDR-}" ]; then
+			cat > "${EP_CONF_DIR}/bind-addr.hcl" <<-EOF
+				bind_addr = "${BIND_ADDR}"
+			EOF
+	fi
+
 	if [ -n "${ADVERTISE_ADDR-}" ]; then
 			cat > "${EP_CONF_DIR}/advertise-addr.hcl" <<-EOF
 				advertise {

@@ -9,6 +9,10 @@ ContainerName=nomad-server
 # Use host network instead of forwarding ports to simplify
 Network=host
 
+# Only accessible over localhost by default since no auth
+Environment=BIND_ADDR=127.0.0.1
+Environment=ADVERTISE_ADDR=127.0.0.1
+
 # Ports: 4646 -> HTTP, 4647 -> RPC, 4648 -> SERF
 # PublishPort=4646:4646
 # PublishPort=4647:4647

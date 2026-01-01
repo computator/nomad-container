@@ -11,8 +11,8 @@ AutoUpdate=registry
 ContainerName=nomad-client
 Network=host
 
-# Set to server address
-Environment=NOMAD_SERVERS=host.containers.internal
+# Set to actual server address
+Environment=NOMAD_SERVERS=127.0.0.1
 Environment=ALLOC_DIR=${ALLOC_DIR}
 Environment=DRIVER_ALLOWLIST=podman
 # Optional: override client http port to not conflict with local server
