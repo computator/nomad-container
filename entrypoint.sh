@@ -61,11 +61,21 @@ if [ "${cmd}" = "agent" ]; then
 	mkdir -p ${EP_CONF_DIR}
 	build_configs
 
+	is_server=
+	for n; do
+		[ "$n" = '-server' ] || continue
+		is_server=1
+		break
+	done
+
+	alloc_arg=
+	[ ! $is_server ] && alloc_arg=${ALLOC_DIR?'ALLOC_DIR must be set!'}
+
 	set -- \
 		-config ${EP_CONF_DIR} \
 		-config /config \
 		-data-dir /data \
-		-alloc-dir "${ALLOC_DIR?'ALLOC_DIR must be set!'}" \
+		${alloc_arg:+'-alloc-dir' "${alloc_arg}"} \
 		-plugin-dir /plugins \
 		"$@"
 fi
