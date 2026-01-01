@@ -14,7 +14,7 @@ Network=host
 # PublishPort=4647:4647
 # PublishPort=4648:4648/tcp
 # PublishPort=4648:4648/udp
-# Environment=ADVERTISE_IP=1.2.3.4
+# Environment=ADVERTISE_ADDR=1.2.3.4
 
 Exec=agent \
 	-server \

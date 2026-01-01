@@ -20,12 +20,12 @@ build_configs () {
 			EOF
 	fi
 
-	if [ -n "${ADVERTISE_IP-}" ]; then
-			cat > "${EP_CONF_DIR}/advertise-ip.hcl" <<-EOF
+	if [ -n "${ADVERTISE_ADDR-}" ]; then
+			cat > "${EP_CONF_DIR}/advertise-addr.hcl" <<-EOF
 				advertise {
-				  http = "${ADVERTISE_IP}"
-				  rpc = "${ADVERTISE_IP}"
-				  serf = "${ADVERTISE_IP}"
+				  http = "${ADVERTISE_ADDR}"
+				  rpc = "${ADVERTISE_ADDR}"
+				  serf = "${ADVERTISE_ADDR}"
 				}
 			EOF
 	fi
