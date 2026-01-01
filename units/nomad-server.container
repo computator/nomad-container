@@ -1,0 +1,26 @@
+[Unit]
+Description=Nomad Server
+
+[Container]
+Image=ghcr.io/computator/nomad
+AutoUpdate=registry
+ContainerName=nomad-server
+
+# Use host network instead of forwarding ports to simplify
+Network=host
+
+# Ports: 4646 -> HTTP, 4647 -> RPC, 4648 -> SERF
+# PublishPort=4646:4646
+# PublishPort=4647:4647
+# PublishPort=4648:4648/tcp
+# PublishPort=4648:4648/udp
+# Environment=ADVERTISE_IP=1.2.3.4
+
+Exec=agent \
+	-server \
+	-bootstrap-expect=1
+
+Volume=nomad-server-data:/data
+
+[Install]
+WantedBy=multi-user.target
