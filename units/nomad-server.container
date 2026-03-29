@@ -13,6 +13,9 @@ Network=host
 Environment=BIND_ADDR=127.0.0.1
 Environment=ADVERTISE_ADDR=127.0.0.1
 
+# can be created with: head -c 32 /dev/urandom | base64
+# Secret=nomad-server-serf-key,type=env,target=SERF_ENC_KEY
+
 # Ports: 4646 -> HTTP, 4647 -> RPC, 4648 -> SERF
 # PublishPort=4646:4646
 # PublishPort=4647:4647

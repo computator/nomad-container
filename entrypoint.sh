@@ -46,6 +46,17 @@ build_configs () {
 			EOF
 	fi
 
+	if [ -n "${SERF_ENC_KEY-}" ]; then
+			# mktemp creates with mode 600
+			f=$(mktemp -p "${EP_CONF_DIR}")
+			cat > "$f" <<-EOF
+				server {
+				  encrypt = "${SERF_ENC_KEY}"
+				}
+			EOF
+			mv "$f" "${EP_CONF_DIR}/serf-enc-key.hcl"
+	fi
+
 	if [ -n "${NOMAD_SERVERS-}" ]; then
 			cat > "${EP_CONF_DIR}/servers.hcl" <<-EOF
 				client {
