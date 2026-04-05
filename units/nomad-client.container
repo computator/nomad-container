@@ -18,6 +18,16 @@ Environment=DRIVER_ALLOWLIST=podman
 # Optional: override client http port to not conflict with local server
 Environment=BIND_PORTS=http=4649
 
+# ca and certs can be created with nomad tls subcommands
+# Secret=nomad-ca-cert
+# Secret=nomad-client-cert
+# Secret=nomad-client-key
+# Environment=TLS_ENABLED=1
+# # Environment=TLS_HTTPS_VERIFY=1
+# Environment=TLS_CA_FILE=/run/secrets/nomad-ca-cert
+# Environment=TLS_CERT_FILE=/run/secrets/nomad-client-cert
+# Environment=TLS_KEY_FILE=/run/secrets/nomad-client-key
+
 Exec=agent \
 	-client
 

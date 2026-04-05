@@ -46,6 +46,21 @@ build_configs () {
 			EOF
 	fi
 
+	if [ -n "${TLS_ENABLED:+1}" ]; then {
+			TLS_HTTPS_VERIFY=${TLS_HTTPS_VERIFY:+true}
+			cat > "${EP_CONF_DIR}/tls.hcl" <<-EOF
+				tls {
+				  http = true
+				  rpc = true
+				  verify_https_client = ${TLS_HTTPS_VERIFY:-false}
+				  verify_server_hostname = true
+				  ca_file = "${TLS_CA_FILE:?'TLS_CA_FILE must be set!'}"
+				  cert_file = "${TLS_CERT_FILE:?'TLS_CERT_FILE must be set!'}"
+				  key_file = "${TLS_KEY_FILE:?'TLS_KEY_FILE must be set!'}"
+				}
+			EOF
+	}; fi
+
 	if [ -n "${SERF_ENC_KEY-}" ]; then
 			# mktemp creates with mode 600
 			f=$(mktemp -p "${EP_CONF_DIR}")
