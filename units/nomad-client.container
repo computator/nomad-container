@@ -28,6 +28,8 @@ Environment=BIND_PORTS=http=4649
 # Environment=TLS_CERT_FILE=/run/secrets/nomad-client-cert
 # Environment=TLS_KEY_FILE=/run/secrets/nomad-client-key
 
+# Environment=ACL_ENABLED=1
+
 Exec=agent \
 	-client
 

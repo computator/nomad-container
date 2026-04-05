@@ -72,6 +72,14 @@ build_configs () {
 			mv "$f" "${EP_CONF_DIR}/serf-enc-key.hcl"
 	fi
 
+	if [ -n "${ACL_ENABLED:+1}" ]; then
+			cat > "${EP_CONF_DIR}/acl-enable.hcl" <<-EOF
+				acl {
+				  enabled = true
+				}
+			EOF
+	fi
+
 	if [ -n "${NOMAD_SERVERS-}" ]; then
 			cat > "${EP_CONF_DIR}/servers.hcl" <<-EOF
 				client {
