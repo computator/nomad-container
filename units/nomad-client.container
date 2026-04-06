@@ -12,7 +12,7 @@ ContainerName=nomad-client
 Network=host
 
 # Set to server address
-Environment=NOMAD_SERVERS=host.container.internal
+Environment=NOMAD_SERVERS=localhost
 Environment=ALLOC_DIR=${ALLOC_DIR}
 Environment=DRIVER_ALLOWLIST=podman
 # Optional: override client http port to not conflict with local server
