@@ -4,6 +4,8 @@ set -eu
 EP_CONF_DIR=/run/nomad-entrypoint-conf.d
 
 build_configs () {
+	local is_server=$1
+
 	cat > "${EP_CONF_DIR}/disable-updates.hcl" <<-EOF
 		disable_update_check = true
 	EOF
@@ -46,22 +48,22 @@ build_configs () {
 			EOF
 	fi
 
-	if [ -n "${TLS_ENABLED:+1}" ]; then {
-			TLS_HTTPS_VERIFY=${TLS_HTTPS_VERIFY:+true}
+	if [ -z "${TLS_DISABLED:+1}" ]; then
 			cat > "${EP_CONF_DIR}/tls.hcl" <<-EOF
 				tls {
 				  http = true
 				  rpc = true
-				  verify_https_client = ${TLS_HTTPS_VERIFY:-false}
+				  verify_https_client = ${TLS_HTTPS_VERIFY:-true}
 				  verify_server_hostname = true
 				  ca_file = "${TLS_CA_FILE:?'TLS_CA_FILE must be set!'}"
 				  cert_file = "${TLS_CERT_FILE:?'TLS_CERT_FILE must be set!'}"
 				  key_file = "${TLS_KEY_FILE:?'TLS_KEY_FILE must be set!'}"
 				}
 			EOF
-	}; fi
+	fi
 
-	if [ -n "${SERF_ENC_KEY-}" ]; then
+	if [ $is_server ] && [ -z "${SERF_ENC_DISABLED:+1}" ]; then
+			: "${SERF_ENC_KEY:?'SERF_ENC_KEY must be set!'}"
 			# mktemp creates with mode 600
 			f=$(mktemp -p "${EP_CONF_DIR}")
 			cat > "$f" <<-EOF
@@ -98,15 +100,15 @@ cmd=${1-}
 [ $# -gt 0 ] && shift
 
 if [ "${cmd}" = "agent" ]; then
-	mkdir -p ${EP_CONF_DIR}
-	build_configs
-
 	is_server=
 	for n; do
 		[ "$n" = '-server' ] || continue
 		is_server=1
 		break
 	done
+
+	mkdir -p ${EP_CONF_DIR}
+	build_configs "${is_server}"
 
 	alloc_arg=
 	[ ! $is_server ] && alloc_arg=${ALLOC_DIR?'ALLOC_DIR must be set!'}

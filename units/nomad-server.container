@@ -9,22 +9,19 @@ ContainerName=nomad-server
 # Use host network instead of forwarding ports to simplify
 Network=host
 
-# Only accessible over localhost by default since no auth
-Environment=BIND_ADDR=127.0.0.1
-Environment=ADVERTISE_ADDR=127.0.0.1
-
 # can be created with: head -c 32 /dev/urandom | base64
-# Secret=nomad-server-serf-key,type=env,target=SERF_ENC_KEY
+Secret=nomad-server-serf-key,type=env,target=SERF_ENC_KEY
 
 # ca and certs can be created with nomad tls subcommands
-# Secret=nomad-ca-cert
-# Secret=nomad-server-cert
-# Secret=nomad-server-key
-# Environment=TLS_ENABLED=1
-# # Environment=TLS_HTTPS_VERIFY=1
-# Environment=TLS_CA_FILE=/run/secrets/nomad-ca-cert
-# Environment=TLS_CERT_FILE=/run/secrets/nomad-server-cert
-# Environment=TLS_KEY_FILE=/run/secrets/nomad-server-key
+Secret=nomad-ca-cert
+Secret=nomad-server-cert
+Secret=nomad-server-key
+Environment=TLS_CA_FILE=/run/secrets/nomad-ca-cert
+Environment=TLS_CERT_FILE=/run/secrets/nomad-server-cert
+Environment=TLS_KEY_FILE=/run/secrets/nomad-server-key
+# Environment=TLS_HTTPS_VERIFY=false
+
+Environment=ACL_ENABLED=1
 
 # Ports: 4646 -> HTTP, 4647 -> RPC, 4648 -> SERF
 # PublishPort=4646:4646
@@ -32,8 +29,6 @@ Environment=ADVERTISE_ADDR=127.0.0.1
 # PublishPort=4648:4648/tcp
 # PublishPort=4648:4648/udp
 # Environment=ADVERTISE_ADDR=1.2.3.4
-
-# Environment=ACL_ENABLED=1
 
 Exec=agent \
 	-server \
