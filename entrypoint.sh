@@ -111,7 +111,7 @@ if [ "${cmd}" = "agent" ]; then
 	build_configs "${is_server}"
 
 	alloc_arg=
-	[ ! $is_server ] && alloc_arg=${ALLOC_DIR?'ALLOC_DIR must be set!'}
+	[ ! $is_server ] && alloc_arg=${ALLOC_DIR:?'ALLOC_DIR must be set!'}
 
 	set -- \
 		-config ${EP_CONF_DIR} \
