@@ -23,6 +23,5 @@ RUN set -eux; \
 COPY entrypoint.sh /
 
 VOLUME /data
-VOLUME /alloc
 EXPOSE 4646 4647 4648/tcp 4648/udp
 ENTRYPOINT ["/entrypoint.sh"]
