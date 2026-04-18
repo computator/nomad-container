@@ -101,11 +101,19 @@ cmd=${1-}
 
 if [ "${cmd}" = "agent" ]; then
 	is_server=
+	is_dev=
 	for n; do
-		[ "$n" = '-server' ] || continue
+		[ "$n" = '-server' ] || [ "$n" = '-dev' ] || continue
 		is_server=1
+		[ "$n" = '-dev' ] && is_dev=1
 		break
 	done
+
+	if [ $is_dev ]; then
+		: ${BIND_ADDR:="0.0.0.0"}
+		: ${TLS_DISABLED:="$(printenv | grep -q '^TLS_[^=]*=' || echo 1)"}
+		: ${SERF_ENC_DISABLED:="$([ "${SERF_ENC_KEY+1}" ] || echo 1)"}
+	fi
 
 	mkdir -p ${EP_CONF_DIR}
 	build_configs "${is_server}"
