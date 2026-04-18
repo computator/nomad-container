@@ -14,7 +14,7 @@ Network=host
 # Set to server address
 Environment=NOMAD_SERVERS=localhost
 Environment=ALLOC_DIR=${ALLOC_DIR}
-Environment=DRIVER_ALLOWLIST=podman
+# Environment=DRIVER_ALLOWLIST=podman
 # Optional: override client http port to not conflict with local server
 Environment=BIND_PORTS=http=4649
 

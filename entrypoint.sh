@@ -109,6 +109,8 @@ if [ "${cmd}" = "agent" ]; then
 		break
 	done
 
+	: ${DRIVER_ALLOWLIST="podman"}
+
 	if [ $is_dev ]; then
 		: ${BIND_ADDR:="0.0.0.0"}
 		: ${TLS_DISABLED:="$(printenv | grep -q '^TLS_[^=]*=' || echo 1)"}
