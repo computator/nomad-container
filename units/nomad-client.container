@@ -38,6 +38,7 @@ Volume=/run/podman/podman.sock:/run/podman/podman.sock
 
 AddCapability=SYS_ADMIN
 SecurityLabelDisable=true
+AppArmor=unconfined
 PodmanArgs=--cgroupns=host
 Unmask=/sys/fs/cgroup
 

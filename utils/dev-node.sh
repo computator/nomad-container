@@ -19,6 +19,8 @@ if [ $is_root ]; then
 	# allow access to cgroups so the agent can start
 	extra_args="${extra_args} --cgroupns=host"
 	extra_args="${extra_args} --security-opt unmask=/sys/fs/cgroup"
+	# disable apparmor to allow alloc mounting
+	extra_args="${extra_args} --security-opt apparmor=unconfined"
 fi
 
 exec podman run \
