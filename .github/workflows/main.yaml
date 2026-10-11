@@ -21,7 +21,7 @@ jobs:
       BUILDAH_FORMAT: docker
     steps:
       - id: restore-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           # we can't precalculate the hash for a key so
           # set an invalid key and fall back to the most recent cache
@@ -46,7 +46,7 @@ jobs:
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: printenv PASSWORD | podman login -v ${{ env.REGISTRY }} -u "$USERNAME" --password-stdin
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # TODO: switch to --pull=newer once supported https://github.com/containers/podman/issues/22845
       - run: podman build --pull=always -t ${{ env.IMAGE }} .
@@ -91,7 +91,7 @@ jobs:
             | xargs podman save -m -o "${IMGCACHE_PATH:?}" \
             || echo "::error::Failure while exporting images to cache"
 
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v6
         if: steps.export-cache.outcome == 'success' && !steps.export-cache.outputs.export-skipped && !endsWith(steps.restore-cache.outputs.cache-matched-key, hashFiles(env.IMGCACHE_PATH))
         with:
           key: image-cache-${{ hashFiles(env.IMGCACHE_PATH) }}
