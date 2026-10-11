@@ -1,4 +1,4 @@
-ARG NOMAD_VERSION=1.11
+ARG NOMAD_VERSION=2.0
 FROM docker.io/hashicorp/nomad:${NOMAD_VERSION}
 
 LABEL org.opencontainers.image.source=https://github.com/computator/nomad-container
